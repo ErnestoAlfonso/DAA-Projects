@@ -1,9 +1,8 @@
-import dataclasses
 
-@dataclasses
 class Student:
-    suspended : str
-    group : int
+    def __init__(self, suspended : str,  group : int):
+        self.suspended =suspended
+        self.group = group
 
 def group(seq: list,  k : int):
     susp_grouped = []
@@ -13,8 +12,10 @@ def group(seq: list,  k : int):
         if i < k:
             k_group.append(stud_r)
         else:
-            susp_grouped.append(k_group)
+            k1=k_group.copy()
+            susp_grouped.append(k1)
             k_group.clear()
+            k_group.append(stud_r)
             i = 0
         i += 1
     susp_grouped.append(k_group)
@@ -26,16 +27,19 @@ def get_amount_rest(susp_grouped : list):
 
 
 def count_stud_per_group(students : list[Student]):
-    amounts_per_group = {}
+    amounts_per_group : dict = {}
     for stud in students:
-        amounts_per_group[stud.group] += 1
+        amounts_per_group[stud.group] = 0
+    for stud in students:
+        amounts_per_group[stud.group] +=1
     return amounts_per_group
 
 def create_last_group(amount_poo_group : dict, amount_rec_group : dict, amount_stud_per_group : dict, amount_rest_poo, amount_rest_rec, k):
-    for group in amount_stud_per_group.keys:
-        if min(amount_poo_group[group], amount_rest_poo) + min(amount_rec_group[group], amount_rest_rec) >= k:
-            return True
-        else:
+    for group in amount_stud_per_group:
+        try:
+            if min(amount_poo_group[group], amount_rest_poo) + min(amount_rec_group[group], amount_rest_rec) >= k:
+                return True
+        except:
             continue
     
     return False
@@ -49,7 +53,7 @@ def Solve(students : list[Student], k : int):
     susp_poo = []
 
     for stud in students:
-        if stud.suspended == "POO":
+        if stud.suspended == "P":
             susp_poo.append(stud)
         else:
             susp_rec.append(stud)
