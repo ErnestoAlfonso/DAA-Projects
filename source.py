@@ -20,9 +20,9 @@ def group(seq: list,  k : int):
     susp_grouped.append(k_group)
     return susp_grouped
 
-def get_elem_list(susp_grouped : list, susp_rest : list):
-    for i in range(len(susp_grouped[len(susp_grouped)-1])):
-        susp_rest.append(susp_grouped[len(susp_grouped)-1][i])
+def get_amount_rest(susp_grouped : list):
+    a = len(susp_grouped[len(susp_grouped)-1])
+    return a
 
 
 def count_stud_per_group(students : list[Student]):
@@ -31,9 +31,15 @@ def count_stud_per_group(students : list[Student]):
         amounts_per_group[stud.group] += 1
     return amounts_per_group
 
-def create_last_group():
-    # TODO: create def to find the last group if is posible
-    pass
+def create_last_group(amount_poo_group : dict, amount_rec_group : dict, amount_stud_per_group : dict, amount_rest_poo, amount_rest_rec, k):
+    for group in amount_stud_per_group.keys:
+        if min(amount_poo_group[group], amount_rest_poo) + min(amount_rec_group[group], amount_rest_rec) >= k:
+            return True
+        else:
+            continue
+    
+    return False
+    
 
 
 
@@ -41,8 +47,6 @@ def Solve(students : list[Student], k : int):
     amountOfstud_per_group = count_stud_per_group(students)
     susp_rec = []
     susp_poo = []
-    susp_rest = []
-    gthan_k = []
 
     for stud in students:
         if stud.suspended == "POO":
@@ -50,20 +54,24 @@ def Solve(students : list[Student], k : int):
         else:
             susp_rec.append(stud)
     
+    amountOfstud_per_group_rec = count_stud_per_group(susp_rec)
+    amountOfstud_per_group_poo = count_stud_per_group(susp_poo)
+    
     susp_rec_grouped = group(susp_rec, k)
     susp_poo_grouped = group(susp_poo, k)
 
     if len(susp_rec_grouped[len(susp_rec_grouped) - 1]) == 0 and len(susp_poo_grouped[len(susp_poo_grouped) - 1]) == 0:
-        return susp_poo_grouped + susp_rec_grouped
+        return len(susp_poo_grouped + susp_rec_grouped)
     else:
-        get_elem_list(susp_poo_grouped, susp_rest)
-        get_elem_list(susp_rec_grouped, susp_rest)
+        amount_rest_poo = get_amount_rest(susp_poo_grouped)
+        amount_rest_rec = get_amount_rest(susp_rec_grouped)
 
-        if len(susp_rest) < k:
-            return susp_poo_grouped + susp_rec_grouped
-        else:
-            create_last_group() # TODO: complete
-        return susp_poo_grouped + susp_rec_grouped
+        if amount_rest_rec + amount_rest_poo < k:
+            return len(susp_rec_grouped + susp_poo_grouped)
+        elif create_last_group(amountOfstud_per_group_poo,amountOfstud_per_group_rec, amountOfstud_per_group, amount_rest_poo, amount_rest_rec,k):
+            return len(susp_poo_grouped + susp_rec_grouped) + 1
+    
+    return len(susp_poo_grouped + susp_rec_grouped)
 
 
 
