@@ -61,17 +61,17 @@ def Solve(students : list[Student], k : int):
     susp_poo_grouped = group(susp_poo, k)
 
     if len(susp_rec_grouped[len(susp_rec_grouped) - 1]) == 0 and len(susp_poo_grouped[len(susp_poo_grouped) - 1]) == 0:
-        return len(susp_poo_grouped + susp_rec_grouped)
+        return len(susp_poo_grouped + susp_rec_grouped) - 2
     else:
         amount_rest_poo = get_amount_rest(susp_poo_grouped)
         amount_rest_rec = get_amount_rest(susp_rec_grouped)
 
         if amount_rest_rec + amount_rest_poo < k:
-            return len(susp_rec_grouped + susp_poo_grouped)
+            return len(susp_rec_grouped + susp_poo_grouped) - 2
         elif create_last_group(amountOfstud_per_group_poo,amountOfstud_per_group_rec, amountOfstud_per_group, amount_rest_poo, amount_rest_rec,k):
-            return len(susp_poo_grouped + susp_rec_grouped) + 1
+            return len(susp_poo_grouped + susp_rec_grouped) -1
     
-    return len(susp_poo_grouped + susp_rec_grouped)
+    return len(susp_poo_grouped + susp_rec_grouped) - 2
 
 
 
