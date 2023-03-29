@@ -1,4 +1,7 @@
 
+from itertools import permutations
+
+
 class Student:
     def __init__(self, suspended : str,  group : int):
         self.suspended = suspended
@@ -85,7 +88,36 @@ def Solve(students : list[Student], k : int):
         else:
             return len(susp_poo_grouped) + len(susp_rec_grouped) - 2 
     
-    return 0
+def Solve_bruto(students : list[Student], k : int):
+
+    all_perm = permutations(students)
+
+    max_groups = 0
+    for perm in all_perm:
+        count = 0
+        
+        for i in range(len(perm) // k):
+            sub_list = perm[i*k : (i*k + k)]
+            correct_subject_set = True
+            correct_group_set = True
+
+            for j in range(len(sub_list) - 1):
+                if sub_list[j].suspended != sub_list[j+1].suspended:
+                    correct_subject_set = False
+                    break
+
+            for j in range(len(sub_list) - 1):
+                if sub_list[j].group != sub_list[j+1].group:
+                    correct_group_set = False
+                    break
+
+            if correct_subject_set or correct_group_set: 
+                count += 1
+
+        max_groups = max(max_groups, count)
+
+    return max_groups
+
 
 
 

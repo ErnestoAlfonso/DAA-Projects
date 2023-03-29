@@ -1,7 +1,6 @@
 import random
-from random import randint
 from source import *
-from colorama import Fore, Back, Style
+from colorama import Fore
 
 def generator(maxLen : int):
     students = []
@@ -18,15 +17,17 @@ def generator(maxLen : int):
     return students, k
 
 def tester(amount_to_test : int):
-    greedy_solution = Solve(*generator(7))
-    backtrack_solution = 3
+    stud ,group = generator(100) 
+    greedy_solution = Solve(stud,group)
+    print("GREEDY: -----> ", greedy_solution)
+    backtrack_solution = Solve_bruto(stud,group)
 
-    print(Fore.GREEN, backtrack_solution)
+    print(Fore.GREEN,f"Bruto Solution: " + str(backtrack_solution))
 
     if greedy_solution == backtrack_solution:
-        print(Fore.GREEN, greedy_solution)
+        print(Fore.GREEN,"Good Solution: " + str(greedy_solution))
     else:
-        print(Fore.RED, greedy_solution)
+        print(Fore.RED, "Good Solution: " + str(greedy_solution))
     
     amount_to_test -= 1
     if amount_to_test > 0:
