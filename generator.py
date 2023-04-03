@@ -2,12 +2,16 @@ import random
 from source import *
 from colorama import Fore
 
-def generator(maxLen : int):
+def generator(maxLen : int, n : int):
     students = []
     arrLen = random.randint(1, maxLen)
+    groups = [i for i in range(1, n+1)]
     for i in range(arrLen):
+        if len(groups) == 0:
+            groups = [i for i in range(1, n+1)]
         current_stud_failed = random.choice("P""R")
-        current_stud_group = random.randint(1,arrLen)
+        current_stud_group = random.choice(groups)
+        groups.remove(current_stud_group)
         students.append(Student(current_stud_failed,current_stud_group))
     
     k = random.randint(1,arrLen)
