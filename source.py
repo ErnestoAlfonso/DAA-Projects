@@ -54,14 +54,27 @@ def Solve(students: list[Student], k : int):
                             [0 for i in range(len(1,k))]]
 
 
-    for i in range(len(columns_to_v[0])):
+    for i in range(len(all_fluctuations)):
         for j in range(len(all_fluctuations[i])):
             new_rest = k - all_fluctuations[i][j] + rest_P
-            list_of_posible_rest[i][new_rest] = 1
+            list_of_posible_rest[i][new_rest % k] = 1
     
     for i in range(1,len(columns_to_v[0])):
-        for j in range(len(list_of_posible_rest[0])):
-            if list_of_posible_rest[i-1][j] == 1:
+        for j in range(0,k):
+            if list_of_posible_rest[i][j] == 1:
+                for z in range(0,k):
+                    if list_of_posible_rest[i-1][z] == 1:
+                        new_rest = (z + j) % k
+                    if list_of_posible_rest[i][new_rest] == 0:
+                        list_of_posible_rest[i][new_rest] = 1
+    
+    for i in range(0,k):
+        if list_of_posible_rest[len(list_of_posible_rest)-1][i]< len(students) % k:
+            return amount_sets_P + amount_sets_R + 1
+    
+    return amount_sets_P + amount_sets_R
+            
+            
 
     
 
