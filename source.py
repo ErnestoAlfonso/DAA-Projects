@@ -28,8 +28,6 @@ def BuildMatrix(students: list[Student]):
 
 def Solve(students: list[Student], k : int):
     matrix = BuildMatrix(students)
-    print(matrix)
-    print("*****************************************************")
     amount_student_P = 0
     amount_student_R = 0
     for i in range(len(matrix[0])):
@@ -41,12 +39,6 @@ def Solve(students: list[Student], k : int):
 
     if rest_P + rest_R < k:
         return amount_sets_P + amount_sets_R
-
-    # print(f"rest_P---->{rest_P}")
-
-    # print(f"rest_R---->{rest_R}")
-
-    # print("*****************************************************")
 
     columns_to_v = []
     all_fluctuations = []
@@ -64,13 +56,7 @@ def Solve(students: list[Student], k : int):
             fluctuations_i.append(i)
         all_fluctuations.append(fluctuations_i)
     
-
-    # print("Fluctuations")
-    # print(all_fluctuations)
-    
-    # print("*****************************************************")
     list_of_posible_rest = [[0 for i in range(0,k)] for i in range(len(columns_to_v))]
-
 
     for i in range(len(all_fluctuations)):
         for j in range(len(all_fluctuations[i])):
