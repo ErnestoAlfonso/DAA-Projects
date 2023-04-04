@@ -4,7 +4,7 @@ from colorama import Fore
 
 def generator(maxLen : int, n : int):
     students = []
-    arrLen = random.randint(1, maxLen)
+    arrLen = random.randint(n, maxLen)
     groups = [i for i in range(1, n+1)]
     for i in range(arrLen):
         if len(groups) == 0:
@@ -21,7 +21,7 @@ def generator(maxLen : int, n : int):
     return students, k
 
 def tester(amount_to_test : int):
-    stud ,group = generator(100) 
+    stud ,group = generator(7, 3) 
     greedy_solution = Solve(stud,group)
     print("GREEDY: -----> ", greedy_solution)
     backtrack_solution = Solve_bruto(stud,group)

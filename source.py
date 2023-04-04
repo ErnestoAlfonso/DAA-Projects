@@ -28,6 +28,8 @@ def BuildMatrix(students: list[Student]):
 
 def Solve(students: list[Student], k : int):
     matrix = BuildMatrix(students)
+    print(matrix)
+    print("*****************************************************")
     amount_student_P = 0
     amount_student_R = 0
     for i in range(len(matrix[0])):
@@ -37,40 +39,59 @@ def Solve(students: list[Student], k : int):
     amount_sets_P, rest_P = amount_student_P // k, amount_student_P % k
     amount_sets_R, rest_R = amount_student_R // k, amount_student_R % k
 
+    if rest_P + rest_R < k:
+        return amount_sets_P + amount_sets_R
+
+    # print(f"rest_P---->{rest_P}")
+
+    # print(f"rest_R---->{rest_R}")
+
+    # print("*****************************************************")
+
     columns_to_v = []
     all_fluctuations = []
 
     for i in range(len(matrix[0])):
-            if matrix[0,i] + matrix[1,i] >= k:
-                columns_to_v.append([matrix[0,i], matrix[1,i]])
+            if matrix[0][i] + matrix[1][i] >= k:
+                columns_to_v.append([matrix[0][i], matrix[1][i]])
     
-    for i in range(len(columns_to_v[0])):
+    if len(columns_to_v) == 0:
+        return amount_sets_P + amount_sets_R
+
+    for i in range(len(columns_to_v)):
         fluctuations_i = []
-        for i in range(max(0, k - columns_to_v[1][i]), min(k, k - max(0, k - columns_to_v[0][i]))):
+        for i in range(max(0, k - columns_to_v[i][1]), min(k, k - max(0, k - columns_to_v[i][0]))+1):
             fluctuations_i.append(i)
         all_fluctuations.append(fluctuations_i)
     
-    list_of_posible_rest = [[0 for i in range(len(columns_to_v[0]))], 
-                            [0 for i in range(len(1,k))]]
+
+    # print("Fluctuations")
+    # print(all_fluctuations)
+    
+    # print("*****************************************************")
+    list_of_posible_rest = [[0 for i in range(0,k)] for i in range(len(columns_to_v))]
 
 
     for i in range(len(all_fluctuations)):
         for j in range(len(all_fluctuations[i])):
-            new_rest = k - all_fluctuations[i][j] + rest_P
-            list_of_posible_rest[i][new_rest % k] = 1
+            if all_fluctuations[i][j] == 0 or all_fluctuations[i][j] == k:
+                continue
+            list_of_posible_rest[i][all_fluctuations[i][j]] = 1
     
-    for i in range(1,len(columns_to_v[0])):
+    for i in range(1,len(columns_to_v)):
         for j in range(0,k):
-            if list_of_posible_rest[i][j] == 1:
+            if list_of_posible_rest[i-1][j] == 1:
+                list_of_posible_rest[i][j] = 1
                 for z in range(0,k):
-                    if list_of_posible_rest[i-1][z] == 1:
-                        new_rest = (z + j) % k
-                    if list_of_posible_rest[i][new_rest] == 0:
-                        list_of_posible_rest[i][new_rest] = 1
+                    if list_of_posible_rest[i][z] == 1:
+                        new_rest = (z + j + 1) % k
+                        if list_of_posible_rest[i][new_rest] == 0:
+                            list_of_posible_rest[i][new_rest] = 1
     
     for i in range(0,k):
-        if list_of_posible_rest[len(list_of_posible_rest)-1][i]< len(students) % k:
-            return amount_sets_P + amount_sets_R + 1
+        if list_of_posible_rest[len(list_of_posible_rest)-1][i] == 1:
+            if i >= (amount_student_P % k - len(students) % k + k) % k and i <= amount_student_P % k + 1:
+                return amount_sets_P + amount_sets_R + 1
     
     return amount_sets_P + amount_sets_R
             
