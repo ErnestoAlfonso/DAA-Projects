@@ -1,4 +1,5 @@
 from tools import BiGraph
+from generator import generate
 
 def board_problem_solve(n, tuples : list):
     graph = [[0] * n for i in range(n)]
@@ -9,4 +10,6 @@ def board_problem_solve(n, tuples : list):
     BG = BiGraph(graph)
     return BG.maxBPM()
 
-print(board_problem_solve(7, [(2,1,2,1), (4,2,4,3), (2,5,2,5), (2,3,5,3), (1,2,1,2), (3,2,5,3)]))
+tuples = generate(50, 5)
+
+print(board_problem_solve(50, tuples))
